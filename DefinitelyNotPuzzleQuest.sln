@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2017
+# Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DefinitelyNotPuzzleQuest", "DefinitelyNotPuzzleQuest.csproj", "{D9775E76-6F49-CE86-E4FD-74A3FDFCACCE}"
 EndProject
 Global

@@ -13,12 +13,7 @@ public enum GemType
     White
 }
 public class Gem : MonoBehaviour {
-    // Update is called once per frame
     public GemType type;
     public int score;
     public int damage;
-	void Update ()
-    {
-		
-	}
 }
