@@ -15,17 +15,34 @@ public class Cell : MonoBehaviour {
             Gem[] gems = FindObjectsOfType<Gem>();
             foreach(Gem gem in gems)
             {
-                if(gem.transform == transform)
+                if(gem.transform.position == transform.position)
                 {
-                    DestroyObject(gem);
+                    Destroy(gem.gameObject);
+                    break;
                 }
             }
         }
-        Initialize();
+        if (content != null)
+        {
+            Initialize();
+        }
+    }
+
+    public GameObject GetContent()
+    {
+        return content;
     }
     
     public void Initialize()
     {
+        Gem[] gems = FindObjectsOfType<Gem>();
+        foreach (Gem gem in gems)
+        {
+            if (gem.transform.position == transform.position)
+            {
+                Destroy(gem.gameObject);
+            }
+        }
         Instantiate(content, transform);
     }
 }

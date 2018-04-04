@@ -23,6 +23,9 @@ public class Board : MonoBehaviour {
     private Direction currentDirection;
 
     System.Random random;
+
+    [SerializeField] GameObject backup1;
+    [SerializeField] GameObject backup2;
     public void Awake()
     {
         random = new System.Random();
@@ -75,12 +78,38 @@ public class Board : MonoBehaviour {
         c.SetContent(null);
     }
 
-    public void Move()
+    public void Move(Cell cell1, Cell cell2)
     {
+        backup1 = cell1.GetContent();
+        backup2 = cell2.GetContent();
 
+        EmptyCell(cell1);
+        EmptyCell(cell2);
+        cell2.SetContent(backup1);
+        cell1.SetContent(backup2);
+
+        if(Match(cell1, cell2))
+        {
+            GetComponent<TurnManager>().NextTurn();
+        }
+        else
+        {
+            cell1.SetContent(backup1);
+            cell2.SetContent(backup2);
+        }
     }
-    public void Match()
+    public bool Match(Cell cell1, Cell cell2)
     {
-
+        bool correct = false;
+        if(Match(cell1)||Match(cell2))
+        {
+            correct = true;
+        }
+        return correct;
+    }
+    public bool Match(Cell c)
+    {
+        bool correct = false;
+        return correct;
     }
 }
