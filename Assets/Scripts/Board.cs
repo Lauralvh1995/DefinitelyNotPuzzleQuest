@@ -52,8 +52,12 @@ public class Board : MonoBehaviour {
         foreach (Cell c in cells)
         {
             c.SetContent(possibleGems[random.Next(possibleGems.Count)]);
-            c.Initialize();
         }
+    }
+
+    private void Update()
+    {
+        
     }
 
     public void ChangeDirection(Direction direction)
@@ -66,9 +70,9 @@ public class Board : MonoBehaviour {
 
     }
 
-    public void EmptyCell()
+    public void EmptyCell(Cell c)
     {
-
+        c.SetContent(null);
     }
 
     public void Move()
