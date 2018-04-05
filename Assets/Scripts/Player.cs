@@ -28,74 +28,54 @@ public class Player : MonoBehaviour {
         currentGreen = bar.GetGreen();
         currentYellow = bar.GetYellow();
     }
-    public void AttackLeft()
+    Player FindPlayer(Color color)
     {
-        switch (playerColor)
+        foreach(Player p in FindObjectsOfType<Player>())
         {
-            case Color.Red:
-                {
-
-                    break;
-                }
-            case Color.Blue:
-                {
-                    break;
-                }
-            case Color.Green:
-                {
-                    break;
-                }
-            case Color.Yellow:
-                {
-                    break;
-                }
+            if(p.playerColor == color)
+            {
+                return p;
+            }
+        }
+        throw new System.ArgumentNullException();
+    }
+    public void AttackRed()
+    {
+        if(currentRed >4)
+        {
+            bar.ChangeRed(-5);
+            FindPlayer(Color.Red).bar.ChangeHP(-5);
+            FindObjectOfType<TurnManager>().ResetPass();
         }
     }
-    public void AttackAcross()
+    public void AttackBlue()
     {
-        switch (playerColor)
+        if (currentBlue > 4)
         {
-            case Color.Red:
-                {
-                    break;
-                }
-            case Color.Blue:
-                {
-                    break;
-                }
-            case Color.Green:
-                {
-                    break;
-                }
-            case Color.Yellow:
-                {
-                    break;
-                }
+            bar.ChangeBlue(-5);
+            FindPlayer(Color.Blue).bar.ChangeHP(-5);
+            FindObjectOfType<TurnManager>().ResetPass();
         }
     }
-    public void AttackRight()
+    public void AttackGreen()
     {
-        switch (playerColor)
+        if (currentGreen > 4)
         {
-            case Color.Red:
-                {
-                    break;
-                }
-            case Color.Blue:
-                {
-                    break;
-                }
-            case Color.Green:
-                {
-                    break;
-                }
-            case Color.Yellow:
-                {
-                    break;
-                }
+            bar.ChangeGreen(-5);
+            FindPlayer(Color.Green).bar.ChangeHP(-5);
+            FindObjectOfType<TurnManager>().ResetPass();
         }
     }
-    public void Attack()
+    public void AttackYellow()
+    {
+        if (currentYellow > 4)
+        {
+            bar.ChangeYellow(-5);
+            FindPlayer(Color.Yellow).bar.ChangeHP(-5);
+            FindObjectOfType<TurnManager>().ResetPass();
+        }
+    }
+    public void MatchAttack()
     {
         switch (playerColor)
         {
@@ -117,7 +97,29 @@ public class Player : MonoBehaviour {
                 }
         }
     }
-    public void Heal()
+    public void ButtonHeal()
+    {
+        switch (playerColor)
+        {
+            case Color.Red:
+                {
+                    break;
+                }
+            case Color.Blue:
+                {
+                    break;
+                }
+            case Color.Green:
+                {
+                    break;
+                }
+            case Color.Yellow:
+                {
+                    break;
+                }
+        }
+    }
+    public void MatchHeal()
     {
         switch (playerColor)
         {

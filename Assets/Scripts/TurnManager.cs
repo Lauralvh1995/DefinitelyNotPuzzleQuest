@@ -6,6 +6,7 @@ public class TurnManager : MonoBehaviour {
     public Transform camera;
     bool moving;
     int turnCount = 0;
+    int pass = 0;
 
     [SerializeField]
     Player[] players;
@@ -14,12 +15,31 @@ public class TurnManager : MonoBehaviour {
     public Canvas player2;
     public Canvas player3;
     public Canvas player4;
+
+    IEnumerator reset;
     private void Awake()
     {
         players = FindObjectsOfType<Player>();
         player2.enabled = false;
         player3.enabled = false;
         player4.enabled = false;
+
+        reset = GetComponent<Board>().ResetBoard();
+    }
+
+    public void Pass()
+    {
+        pass++;
+        if(pass > 3)
+        {
+            ResetPass();
+            StartCoroutine(reset);
+        }
+        NextTurn();
+    }
+    public void ResetPass()
+    {
+        pass = 0;
     }
 
     public void NextTurn()

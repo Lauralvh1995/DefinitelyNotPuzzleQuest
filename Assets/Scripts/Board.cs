@@ -52,9 +52,15 @@ public class Board : MonoBehaviour {
             }
             xOffset += cellPrefab.size;
         }
+        StartCoroutine("ResetBoard");
+    }
+
+    public IEnumerator ResetBoard()
+    {
         foreach (Cell c in cells)
         {
             c.SetContent(possibleGems[random.Next(possibleGems.Count)]);
+            yield return null;
         }
     }
 
@@ -110,6 +116,7 @@ public class Board : MonoBehaviour {
     public bool Match(Cell c)
     {
         bool correct = false;
+        GetComponent<TurnManager>().ResetPass();
         return correct;
     }
 }
