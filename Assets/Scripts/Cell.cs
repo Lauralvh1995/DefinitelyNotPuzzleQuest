@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Cell : MonoBehaviour {
     [SerializeField] GameObject content;
-    int x, y;
+    public int x, y;
     public int size;
 
     public IEnumerator SetContent(GameObject type)

@@ -1,14 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-
-public enum Direction
-{
-    Down,
-    Left,
-    Up,
-    Right
-}
 public class Board : MonoBehaviour {
     public int height;
     public int width;
@@ -20,9 +13,6 @@ public class Board : MonoBehaviour {
     [SerializeField]
     private Cell[,] cells;
     public Cell cellPrefab;
-
-    [SerializeField]
-    private Direction currentDirection;
 
     System.Random random;
 
@@ -51,6 +41,8 @@ public class Board : MonoBehaviour {
                 //newTile.name = "Cell " + x + "x" + y;
 
                 cells[x, y] = newTile;
+                cells[x, y].x = x;
+                cells[x, y].y = y;
 
                 yOffset += cellPrefab.size;
             }
@@ -71,16 +63,12 @@ public class Board : MonoBehaviour {
         {
             Match(c);
         }
+        Clear();
     }
 
     private void Update()
     {
         
-    }
-
-    public void ChangeDirection(Direction direction)
-    {
-        currentDirection = direction;
     }
 
     public IEnumerator Repopulate()
@@ -97,6 +85,7 @@ public class Board : MonoBehaviour {
         {
             Match(c);
         }
+        Clear();
     }
 
     public void EmptyCell(Cell c)
@@ -109,13 +98,12 @@ public class Board : MonoBehaviour {
         backup1 = cell1.GetContent();
         backup2 = cell2.GetContent();
 
-        EmptyCell(cell1);
-        EmptyCell(cell2);
         yield return StartCoroutine(cell2.SetContent(backup1));
         yield return StartCoroutine(cell1.SetContent(backup2));
 
         if(Match(cell1, cell2))
         {
+            Clear();
             yield return StartCoroutine(Repopulate());
             manager.NextTurn();
         }
@@ -137,9 +125,70 @@ public class Board : MonoBehaviour {
     public bool Match(Cell c)
     {
         bool correct = false;
+        bool newlyAdded = true;
+        HashSet<Cell> match = new HashSet<Cell>();
 
+        //add origin to set
+        //check up, left, down and right from origin
+        //if same gem type, add to set
+        //repeat for new elements in set
+        //if no new elements are added, check length
+        //if set.size > 2, return true
+        match.Add(c);
+        while (newlyAdded)
+        {
+            foreach (Cell i in match.ToList())
+            {
+                newlyAdded = false;
+                if (cells[c.x, c.y + 1].GetContent().GetComponent<Gem>().type == i.GetContent().GetComponent<Gem>().type)
+                {
+                    if (match.Add(cells[c.x, c.y + 1]))
+                    {
+                        newlyAdded = true;
+                    }
+                }
+                if (cells[c.x, c.y - 1].GetContent().GetComponent<Gem>().type == i.GetContent().GetComponent<Gem>().type)
+                {
+                    if (match.Add(cells[c.x, c.y - 1]))
+                    {
+                        newlyAdded = true;
+                    }
+                }
+                if (cells[c.x + 1, c.y].GetContent().GetComponent<Gem>().type == i.GetContent().GetComponent<Gem>().type)
+                {
+                    if (match.Add(cells[c.x + 1, c.y]))
+                    {
+                        newlyAdded = true;
+                    }
+                }
+                if (cells[c.x - 1, c.y].GetContent().GetComponent<Gem>().type == i.GetContent().GetComponent<Gem>().type)
+                {
+                    if (match.Add(cells[c.x - 1, c.y]))
+                    {
+                        newlyAdded = true;
+                    }
+                }
+            }
+        }
+        
+        if(match.Count > 2)
+        {
+            correct = true;
 
+            foreach(Cell d in match)
+            {
+                matched.Add(d);
+            }
+        }
         manager.ResetPass();
         return correct;
+    }
+    public void Clear()
+    {
+        foreach(Cell c in matched)
+        {
+
+        }
+        Repopulate();
     }
 }

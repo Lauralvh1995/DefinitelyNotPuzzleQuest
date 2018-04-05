@@ -14,21 +14,12 @@ public class TurnManager : MonoBehaviour {
     [SerializeField]
     private Player activePlayer;
 
-    public Canvas player1;
-    public Canvas player2;
-    public Canvas player3;
-    public Canvas player4;
-
     IEnumerator reset;
     private void Awake()
     {
         players = FindObjectsOfType<Player>();
         System.Array.Sort(players);
         System.Array.Reverse(players);
-
-        player2.enabled = false;
-        player3.enabled = false;
-        player4.enabled = false;
 
         activePlayer = players[turnCount];
 
@@ -57,41 +48,15 @@ public class TurnManager : MonoBehaviour {
         {
             turnCount = 0;
         }
-        switch (turnCount) {
-            case 0:
+        activePlayer = players[turnCount];
+        activePlayer.canvas.enabled = true;
+        foreach(Player p in players)
+        {
+            if(p != activePlayer)
             {
-                    player1.enabled = true;
-                    player2.enabled = false;
-                    player3.enabled = false;
-                    player4.enabled = false;
-                    break;
-            }
-            case 1:
-            {
-                    player1.enabled = false;
-                    player2.enabled = true;
-                    player3.enabled = false;
-                    player4.enabled = false;
-                    break;
-            }
-            case 2:
-            {
-                    player1.enabled = false;
-                    player2.enabled = false;
-                    player3.enabled = true;
-                    player4.enabled = false;
-                    break;
-            }
-            case 3:
-            {
-                    player1.enabled = false;
-                    player2.enabled = false;
-                    player3.enabled = false;
-                    player4.enabled = true;
-                    break;
+                p.canvas.enabled = false;
             }
         }
-        activePlayer = players[turnCount];
         // call it with StartCoroutine:
         if (!moving)
         { // never start a new MoveObject while it's already running!
@@ -99,7 +64,6 @@ public class TurnManager : MonoBehaviour {
             Quaternion postRotation = camera.rotation * rotationAmount;
             StartCoroutine(TurnCamera(camera, camera.rotation, postRotation, 1));
         }
-        GetComponent<Board>().ChangeDirection((Direction)turnCount);
     }
 
     IEnumerator TurnCamera(Transform thisTransform, Quaternion startRot, Quaternion endRot, float time)

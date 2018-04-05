@@ -23,6 +23,8 @@ public class Player : MonoBehaviour, IComparable<Player> {
 
     [SerializeField] Color playerColor;
 
+    public Canvas canvas;
+
     private void Update()
     {
         currentHP = bar.GetHP();
