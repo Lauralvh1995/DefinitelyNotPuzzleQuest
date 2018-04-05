@@ -11,6 +11,9 @@ public class TurnManager : MonoBehaviour {
     [SerializeField]
     Player[] players;
 
+    [SerializeField]
+    private Player activePlayer;
+
     public Canvas player1;
     public Canvas player2;
     public Canvas player3;
@@ -20,9 +23,14 @@ public class TurnManager : MonoBehaviour {
     private void Awake()
     {
         players = FindObjectsOfType<Player>();
+        System.Array.Sort(players);
+        System.Array.Reverse(players);
+
         player2.enabled = false;
         player3.enabled = false;
         player4.enabled = false;
+
+        activePlayer = players[turnCount];
 
         reset = GetComponent<Board>().ResetBoard();
     }
@@ -83,6 +91,7 @@ public class TurnManager : MonoBehaviour {
                     break;
             }
         }
+        activePlayer = players[turnCount];
         // call it with StartCoroutine:
         if (!moving)
         { // never start a new MoveObject while it's already running!

@@ -7,7 +7,7 @@ public class Cell : MonoBehaviour {
     int x, y;
     public int size;
 
-    public void SetContent(GameObject type)
+    public IEnumerator SetContent(GameObject type)
     {
         content = type;
         if(content == null)
@@ -18,6 +18,7 @@ public class Cell : MonoBehaviour {
                 if(gem.transform.position == transform.position)
                 {
                     Destroy(gem.gameObject);
+                    yield return null;
                     break;
                 }
             }

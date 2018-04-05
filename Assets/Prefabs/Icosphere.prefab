@@ -112,3 +112,7 @@ MonoBehaviour:
   type: 3
   score: 50
   damage: 0
+  red: 0
+  blue: 0
+  green: 0
+  yellow: 1

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,8 +11,10 @@ public enum Color
     Yellow
 }
 
-public class Player : MonoBehaviour {
+public class Player : MonoBehaviour, IComparable<Player> {
     public BarController bar;
+    [SerializeField] int score;
+
     int currentHP;
     int currentRed;
     int currentBlue;
@@ -46,6 +49,7 @@ public class Player : MonoBehaviour {
             bar.ChangeRed(-5);
             FindPlayer(Color.Red).bar.ChangeHP(-5);
             FindObjectOfType<TurnManager>().ResetPass();
+            FindObjectOfType<TurnManager>().NextTurn();
         }
     }
     public void AttackBlue()
@@ -55,6 +59,7 @@ public class Player : MonoBehaviour {
             bar.ChangeBlue(-5);
             FindPlayer(Color.Blue).bar.ChangeHP(-5);
             FindObjectOfType<TurnManager>().ResetPass();
+            FindObjectOfType<TurnManager>().NextTurn();
         }
     }
     public void AttackGreen()
@@ -64,6 +69,7 @@ public class Player : MonoBehaviour {
             bar.ChangeGreen(-5);
             FindPlayer(Color.Green).bar.ChangeHP(-5);
             FindObjectOfType<TurnManager>().ResetPass();
+            FindObjectOfType<TurnManager>().NextTurn();
         }
     }
     public void AttackYellow()
@@ -73,6 +79,7 @@ public class Player : MonoBehaviour {
             bar.ChangeYellow(-5);
             FindPlayer(Color.Yellow).bar.ChangeHP(-5);
             FindObjectOfType<TurnManager>().ResetPass();
+            FindObjectOfType<TurnManager>().NextTurn();
         }
     }
     public void MatchAttack()
@@ -96,6 +103,8 @@ public class Player : MonoBehaviour {
                     break;
                 }
         }
+        FindObjectOfType<TurnManager>().ResetPass();
+        FindObjectOfType<TurnManager>().NextTurn();
     }
     public void ButtonHeal()
     {
@@ -140,5 +149,76 @@ public class Player : MonoBehaviour {
                     break;
                 }
         }
+        FindObjectOfType<TurnManager>().ResetPass();
+        FindObjectOfType<TurnManager>().NextTurn();
+    }
+
+    public int CompareTo(Player y)
+    {
+        switch(playerColor)
+        {
+            case Color.Red:
+                {
+                    if (y.playerColor == Color.Blue || y.playerColor == Color.Green || y.playerColor == Color.Yellow)
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+            case Color.Blue:
+                {
+                    if (y.playerColor == Color.Green || y.playerColor == Color.Yellow)
+                    {
+                        return 1;
+                    }
+                    else if(y.playerColor == Color.Red)
+                    {
+                        return -1;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+            case Color.Green:
+                {
+                    if (y.playerColor == Color.Yellow)
+                    {
+                        return 1;
+                    }
+                    else if (y.playerColor == Color.Red || y.playerColor == Color.Blue)
+                    {
+                        return -1;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+            case Color.Yellow:
+                {
+                    if (y.playerColor == Color.Red || y.playerColor == Color.Blue)
+                    {
+                        return -1;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+        }
+        return 0;
+    }
+
+    public void AddScore(int s)
+    {
+        score += s;
+    }
+    public int GetScore()
+    {
+        return score;
     }
 }

@@ -4,14 +4,16 @@ using UnityEngine;
 
 public enum Direction
 {
-    Up,
-    Left,
     Down,
+    Left,
+    Up,
     Right
 }
 public class Board : MonoBehaviour {
     public int height;
     public int width;
+
+    public TurnManager manager;
 
     public List<GameObject> possibleGems;
 
@@ -26,6 +28,8 @@ public class Board : MonoBehaviour {
 
     [SerializeField] GameObject backup1;
     [SerializeField] GameObject backup2;
+
+    [SerializeField] HashSet<Cell> matched;
     public void Awake()
     {
         random = new System.Random();
@@ -59,8 +63,13 @@ public class Board : MonoBehaviour {
     {
         foreach (Cell c in cells)
         {
-            c.SetContent(possibleGems[random.Next(possibleGems.Count)]);
+            StartCoroutine(c.SetContent(possibleGems[random.Next(possibleGems.Count)]));
             yield return null;
+            
+        }
+        foreach (Cell c in cells)
+        {
+            Match(c);
         }
     }
 
@@ -74,34 +83,46 @@ public class Board : MonoBehaviour {
         currentDirection = direction;
     }
 
-    public void Fall()
+    public IEnumerator Repopulate()
     {
-
+        foreach (Cell c in cells)
+        {
+            if (c.GetContent() == null)
+            {
+                StartCoroutine(c.SetContent(possibleGems[random.Next(possibleGems.Count)]));
+            }
+            yield return null;
+        }
+        foreach (Cell c in cells)
+        {
+            Match(c);
+        }
     }
 
     public void EmptyCell(Cell c)
     {
-        c.SetContent(null);
+        StartCoroutine(c.SetContent(null));
     }
 
-    public void Move(Cell cell1, Cell cell2)
+    public IEnumerator Move(Cell cell1, Cell cell2)
     {
         backup1 = cell1.GetContent();
         backup2 = cell2.GetContent();
 
         EmptyCell(cell1);
         EmptyCell(cell2);
-        cell2.SetContent(backup1);
-        cell1.SetContent(backup2);
+        yield return StartCoroutine(cell2.SetContent(backup1));
+        yield return StartCoroutine(cell1.SetContent(backup2));
 
         if(Match(cell1, cell2))
         {
-            GetComponent<TurnManager>().NextTurn();
+            yield return StartCoroutine(Repopulate());
+            manager.NextTurn();
         }
         else
         {
-            cell1.SetContent(backup1);
-            cell2.SetContent(backup2);
+            yield return StartCoroutine(cell1.SetContent(backup1));
+            yield return StartCoroutine(cell2.SetContent(backup2));
         }
     }
     public bool Match(Cell cell1, Cell cell2)
@@ -116,7 +137,9 @@ public class Board : MonoBehaviour {
     public bool Match(Cell c)
     {
         bool correct = false;
-        GetComponent<TurnManager>().ResetPass();
+
+
+        manager.ResetPass();
         return correct;
     }
 }

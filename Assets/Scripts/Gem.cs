@@ -16,4 +16,8 @@ public class Gem : MonoBehaviour {
     public GemType type;
     public int score;
     public int damage;
+    public int red;
+    public int blue;
+    public int green;
+    public int yellow;
 }

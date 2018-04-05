@@ -4059,6 +4059,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bar: {fileID: 770666097}
+  score: 0
   playerColor: 2
 --- !u!114 &770666097
 MonoBehaviour:
@@ -4090,7 +4091,7 @@ Transform:
   - {fileID: 162807052}
   - {fileID: 2113349133}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &773399194
 GameObject:
@@ -5378,6 +5379,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   height: 8
   width: 8
+  manager: {fileID: 923081902}
   possibleGems:
   - {fileID: 1289232652390458, guid: ff3480e1a3a1c2f43b7fc26e283daa4a, type: 2}
   - {fileID: 1243713709229396, guid: aa8404dcd9b686e439a18985a9adc544, type: 2}
@@ -5388,7 +5390,7 @@ MonoBehaviour:
   - {fileID: 1012625449709856, guid: b6f48ae693808dd4b80cc60386ec53d5, type: 2}
   cellPrefab: {fileID: 114451510485274560, guid: acec67c5151a6e7449a859a6261d94fc,
     type: 2}
-  currentDirection: 2
+  currentDirection: 0
   backup1: {fileID: 0}
   backup2: {fileID: 0}
 --- !u!4 &923081901
@@ -5417,6 +5419,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 1016077104}
   players: []
+  activePlayer: {fileID: 0}
   player1: {fileID: 1105827778}
   player2: {fileID: 1543693905}
   player3: {fileID: 2113349136}
@@ -5680,6 +5683,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bar: {fileID: 959533116}
+  score: 0
   playerColor: 1
 --- !u!114 &959533116
 MonoBehaviour:
@@ -5711,7 +5715,7 @@ Transform:
   - {fileID: 773399195}
   - {fileID: 1543693902}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &999363793
 GameObject:
@@ -9046,6 +9050,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bar: {fileID: 1542385320}
+  score: 0
   playerColor: 3
 --- !u!114 &1542385320
 MonoBehaviour:
@@ -9077,7 +9082,7 @@ Transform:
   - {fileID: 1317529560}
   - {fileID: 820570554}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &1543693901
 GameObject:
@@ -9474,7 +9479,7 @@ Transform:
   - {fileID: 1670115131}
   - {fileID: 1105827779}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1591675723
 MonoBehaviour:
@@ -9504,6 +9509,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bar: {fileID: 1591675723}
+  score: 0
   playerColor: 0
 --- !u!1 &1608657319
 GameObject:

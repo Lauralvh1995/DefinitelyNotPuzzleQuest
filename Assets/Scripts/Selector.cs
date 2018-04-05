@@ -28,7 +28,7 @@ public class Selector : MonoBehaviour {
 
                 if(selected != null && target != null)
                 {
-                    GetComponent<Board>().Move(selected, target);
+                    StartCoroutine(GetComponent<Board>().Move(selected, target));
                     selected = null;
                     target = null;
                 }
