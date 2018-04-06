@@ -62,6 +62,7 @@ public class Board : MonoBehaviour {
         foreach (Cell c in cells)
         {
             Match(c);
+            yield return null;
         }
         Clear();
     }
@@ -116,7 +117,9 @@ public class Board : MonoBehaviour {
     public bool Match(Cell cell1, Cell cell2)
     {
         bool correct = false;
-        if(Match(cell1)||Match(cell2))
+        bool check1 = Match(cell1);
+        bool check2 = Match(cell2);
+        if(check1 || check2)
         {
             correct = true;
         }
@@ -187,7 +190,7 @@ public class Board : MonoBehaviour {
     {
         foreach(Cell c in matched)
         {
-
+            EmptyCell(c);
         }
         Repopulate();
     }

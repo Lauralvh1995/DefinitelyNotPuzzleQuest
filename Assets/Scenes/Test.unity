@@ -4061,6 +4061,7 @@ MonoBehaviour:
   bar: {fileID: 770666097}
   score: 0
   playerColor: 2
+  canvas: {fileID: 2113349136}
 --- !u!114 &770666097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5390,7 +5391,6 @@ MonoBehaviour:
   - {fileID: 1012625449709856, guid: b6f48ae693808dd4b80cc60386ec53d5, type: 2}
   cellPrefab: {fileID: 114451510485274560, guid: acec67c5151a6e7449a859a6261d94fc,
     type: 2}
-  currentDirection: 0
   backup1: {fileID: 0}
   backup2: {fileID: 0}
 --- !u!4 &923081901
@@ -5420,10 +5420,6 @@ MonoBehaviour:
   camera: {fileID: 1016077104}
   players: []
   activePlayer: {fileID: 0}
-  player1: {fileID: 1105827778}
-  player2: {fileID: 1543693905}
-  player3: {fileID: 2113349136}
-  player4: {fileID: 820570557}
 --- !u!114 &923081903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5685,6 +5681,7 @@ MonoBehaviour:
   bar: {fileID: 959533116}
   score: 0
   playerColor: 1
+  canvas: {fileID: 1543693905}
 --- !u!114 &959533116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9052,6 +9049,7 @@ MonoBehaviour:
   bar: {fileID: 1542385320}
   score: 0
   playerColor: 3
+  canvas: {fileID: 820570557}
 --- !u!114 &1542385320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9511,6 +9509,7 @@ MonoBehaviour:
   bar: {fileID: 1591675723}
   score: 0
   playerColor: 0
+  canvas: {fileID: 1105827778}
 --- !u!1 &1608657319
 GameObject:
   m_ObjectHideFlags: 0
