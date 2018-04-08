@@ -23,6 +23,7 @@ public class Board : MonoBehaviour {
     public void Awake()
     {
         random = new System.Random();
+        matched = new HashSet<Cell>();
         InitializeBoard();
     }
     public void InitializeBoard()
@@ -142,35 +143,35 @@ public class Board : MonoBehaviour {
         {
             foreach (Cell i in match.ToList())
             {
-                newlyAdded = false;
-                if (cells[c.x, c.y + 1].GetContent().GetComponent<Gem>().type == i.GetContent().GetComponent<Gem>().type)
-                {
-                    if (match.Add(cells[c.x, c.y + 1]))
+                    newlyAdded = false;
+                    if (c.y < 7 && cells[c.x, c.y + 1].GetContent().GetComponent<Gem>().type == i.GetContent().GetComponent<Gem>().type)
                     {
-                        newlyAdded = true;
+                        if (match.Add(cells[c.x, c.y + 1]))
+                        {
+                            newlyAdded = true;
+                        }
                     }
-                }
-                if (cells[c.x, c.y - 1].GetContent().GetComponent<Gem>().type == i.GetContent().GetComponent<Gem>().type)
-                {
-                    if (match.Add(cells[c.x, c.y - 1]))
+                    if (c.y>0 && cells[c.x, c.y - 1].GetContent().GetComponent<Gem>().type == i.GetContent().GetComponent<Gem>().type)
                     {
-                        newlyAdded = true;
+                        if (match.Add(cells[c.x, c.y - 1]))
+                        {
+                            newlyAdded = true;
+                        }
                     }
-                }
-                if (cells[c.x + 1, c.y].GetContent().GetComponent<Gem>().type == i.GetContent().GetComponent<Gem>().type)
-                {
-                    if (match.Add(cells[c.x + 1, c.y]))
+                    if (c.x < 7 && cells[c.x + 1, c.y].GetContent().GetComponent<Gem>().type == i.GetContent().GetComponent<Gem>().type)
                     {
-                        newlyAdded = true;
+                        if (match.Add(cells[c.x + 1, c.y]))
+                        {
+                            newlyAdded = true;
+                        }
                     }
-                }
-                if (cells[c.x - 1, c.y].GetContent().GetComponent<Gem>().type == i.GetContent().GetComponent<Gem>().type)
-                {
-                    if (match.Add(cells[c.x - 1, c.y]))
+                    if (c.x > 0 && cells[c.x - 1, c.y].GetContent().GetComponent<Gem>().type == i.GetContent().GetComponent<Gem>().type)
                     {
-                        newlyAdded = true;
+                        if (match.Add(cells[c.x - 1, c.y]))
+                        {
+                            newlyAdded = true;
+                        }
                     }
-                }
             }
         }
         
@@ -178,11 +179,15 @@ public class Board : MonoBehaviour {
         {
             correct = true;
 
-            foreach(Cell d in match)
+            if (match.Count > 0)
             {
-                matched.Add(d);
+                foreach (Cell d in match)
+                {
+                    matched.Add(d);
+                }
             }
         }
+        
         manager.ResetPass();
         return correct;
     }
@@ -192,6 +197,7 @@ public class Board : MonoBehaviour {
         {
             EmptyCell(c);
         }
-        Repopulate();
+        StartCoroutine(Repopulate());
+        matched.Clear();
     }
 }
