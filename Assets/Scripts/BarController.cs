@@ -15,7 +15,7 @@ public class BarController : MonoBehaviour {
     public void ChangeHP(int i)
     {
         HPBar.value += i;
-        HPBar.GetComponent<Text>().text = HPBar.value + "/" + HPBar.maxValue;
+        HPBar.GetComponentInChildren<Text>().text = HPBar.value + "/" + HPBar.maxValue; 
     }
     public void ChangeRed(int i)
     {

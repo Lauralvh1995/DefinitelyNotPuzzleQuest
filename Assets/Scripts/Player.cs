@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum Color
 {
@@ -24,6 +25,7 @@ public class Player : MonoBehaviour, IComparable<Player> {
     [SerializeField] Color playerColor;
 
     public Canvas canvas;
+    public Text scoreBoard;
 
     private void Update()
     {
@@ -84,29 +86,31 @@ public class Player : MonoBehaviour, IComparable<Player> {
             FindObjectOfType<TurnManager>().NextTurn();
         }
     }
-    public void MatchAttack()
+    public void MatchAttack(int damage)
     {
         switch (playerColor)
         {
             case Color.Red:
                 {
+                    FindPlayer(Color.Green).bar.ChangeHP(-damage);
                     break;
                 }
             case Color.Blue:
                 {
+                    FindPlayer(Color.Yellow).bar.ChangeHP(-damage);
                     break;
                 }
             case Color.Green:
                 {
+                    FindPlayer(Color.Red).bar.ChangeHP(-damage);
                     break;
                 }
             case Color.Yellow:
                 {
+                    FindPlayer(Color.Blue).bar.ChangeHP(-damage);
                     break;
                 }
         }
-        FindObjectOfType<TurnManager>().ResetPass();
-        FindObjectOfType<TurnManager>().NextTurn();
     }
     public void ButtonHeal()
     {
@@ -114,45 +118,25 @@ public class Player : MonoBehaviour, IComparable<Player> {
         {
             case Color.Red:
                 {
+                    FindPlayer(Color.Red).bar.ChangeHP(5);
                     break;
                 }
             case Color.Blue:
                 {
+                    FindPlayer(Color.Blue).bar.ChangeHP(5);
                     break;
                 }
             case Color.Green:
                 {
+                    FindPlayer(Color.Green).bar.ChangeHP(5);
                     break;
                 }
             case Color.Yellow:
                 {
+                    FindPlayer(Color.Yellow).bar.ChangeHP(5);
                     break;
                 }
         }
-    }
-    public void MatchHeal()
-    {
-        switch (playerColor)
-        {
-            case Color.Red:
-                {
-                    break;
-                }
-            case Color.Blue:
-                {
-                    break;
-                }
-            case Color.Green:
-                {
-                    break;
-                }
-            case Color.Yellow:
-                {
-                    break;
-                }
-        }
-        FindObjectOfType<TurnManager>().ResetPass();
-        FindObjectOfType<TurnManager>().NextTurn();
     }
 
     public int CompareTo(Player y)
@@ -218,6 +202,7 @@ public class Player : MonoBehaviour, IComparable<Player> {
     public void AddScore(int s)
     {
         score += s;
+        scoreBoard.text = score.ToString();
     }
     public int GetScore()
     {

@@ -111,4 +111,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 5
   score: 50
-  damage: -1
+  damage: 1
+  red: 0
+  blue: 0
+  green: 0
+  yellow: 0

@@ -24,9 +24,9 @@ public class Board : MonoBehaviour {
     {
         random = new System.Random();
         matched = new HashSet<Cell>();
-        InitializeBoard();
+        StartCoroutine(InitializeBoard());
     }
-    public void InitializeBoard()
+    public IEnumerator InitializeBoard()
     {
         cells = new Cell[height, width];
         float xOffset = 0;
@@ -48,8 +48,10 @@ public class Board : MonoBehaviour {
                 yOffset += cellPrefab.size;
             }
             xOffset += cellPrefab.size;
+            yield return null;
         }
-        StartCoroutine("ResetBoard");
+        yield return StartCoroutine("ResetBoard");
+        manager.Initialize();
     }
 
     public IEnumerator ResetBoard()
@@ -65,29 +67,26 @@ public class Board : MonoBehaviour {
             Match(c);
             yield return null;
         }
-        Clear();
+        yield return StartCoroutine(Clear());
     }
-
-    private void Update()
-    {
-        
-    }
-
     public IEnumerator Repopulate()
     {
+        List<Cell> repopulatedCells = new List<Cell>();
         foreach (Cell c in cells)
         {
             if (c.GetContent() == null)
             {
+                repopulatedCells.Add(c);
                 StartCoroutine(c.SetContent(possibleGems[random.Next(possibleGems.Count)]));
             }
             yield return null;
         }
-        foreach (Cell c in cells)
+        foreach (Cell d in repopulatedCells)
         {
-            Match(c);
+            Match(d);
+            yield return null;
         }
-        Clear();
+        StartCoroutine(Clear());
     }
 
     public void EmptyCell(Cell c)
@@ -105,7 +104,7 @@ public class Board : MonoBehaviour {
 
         if(Match(cell1, cell2))
         {
-            Clear();
+            yield return StartCoroutine(Clear());
             yield return StartCoroutine(Repopulate());
             manager.NextTurn();
         }
@@ -131,7 +130,6 @@ public class Board : MonoBehaviour {
         bool correct = false;
         bool newlyAdded = true;
         HashSet<Cell> match = new HashSet<Cell>();
-
         GemType gem = c.GetContent().GetComponent<Gem>().type;
         //add origin to set
         //check up, left, down and right from origin
@@ -144,35 +142,35 @@ public class Board : MonoBehaviour {
         {
             foreach (Cell i in match.ToList())
             {
-                    newlyAdded = false;
-                    if (i.y < 7 && cells[i.x, i.y + 1].GetContent().GetComponent<Gem>().type == gem)
+                newlyAdded = false;
+                if (i.y < 7 && cells[i.x, i.y + 1].GetContent().GetComponent<Gem>().type == gem)
+                {
+                    if (match.Add(cells[i.x, i.y + 1]))
                     {
-                        if (match.Add(cells[i.x, i.y + 1]))
-                        {
-                            newlyAdded = true;
-                        }
+                        newlyAdded = true;
                     }
-                    if (i.y > 0 && cells[i.x, i.y - 1].GetContent().GetComponent<Gem>().type == gem)
+                }
+                if (i.y > 0 && cells[i.x, i.y - 1].GetContent().GetComponent<Gem>().type == gem)
+                {
+                    if (match.Add(cells[i.x, i.y - 1]))
                     {
-                        if (match.Add(cells[i.x, i.y - 1]))
-                        {
-                            newlyAdded = true;
-                        }
+                        newlyAdded = true;
                     }
-                    if (i.x < 7 && cells[i.x + 1, i.y].GetContent().GetComponent<Gem>().type == gem)
+                }
+                if (i.x < 7 && cells[i.x + 1, i.y].GetContent().GetComponent<Gem>().type == gem)
+                {
+                    if (match.Add(cells[i.x + 1, i.y]))
                     {
-                        if (match.Add(cells[i.x + 1, i.y]))
-                        {
-                            newlyAdded = true;
-                        }
+                        newlyAdded = true;
                     }
-                    if (i.x > 0 && cells[i.x - 1, i.y].GetContent().GetComponent<Gem>().type == gem)
+                }
+                if (i.x > 0 && cells[i.x - 1, i.y].GetContent().GetComponent<Gem>().type == gem)
+                {
+                    if (match.Add(cells[i.x - 1, i.y]))
                     {
-                        if (match.Add(cells[i.x - 1, i.y]))
-                        {
-                            newlyAdded = true;
-                        }
+                        newlyAdded = true;
                     }
+                }
             }
         }
         
@@ -192,13 +190,62 @@ public class Board : MonoBehaviour {
         manager.ResetPass();
         return correct;
     }
-    public void Clear()
+    public IEnumerator Clear()
     {
         foreach(Cell c in matched)
         {
+            Gem g = c.GetContent().GetComponent<Gem>();
+            if (manager.GetActivePlayer() != null)
+            {
+                switch (g.type)
+                {
+                    case GemType.Red:
+                        {
+                            manager.GetActivePlayer().AddScore(g.score);
+                            manager.GetActivePlayer().bar.ChangeRed(g.red);
+                            break;
+                        }
+                    case GemType.Blue:
+                        {
+                            manager.GetActivePlayer().AddScore(g.score);
+                            manager.GetActivePlayer().bar.ChangeBlue(g.blue);
+                            break;
+                        }
+                    case GemType.Green:
+                        {
+                            manager.GetActivePlayer().AddScore(g.score);
+                            manager.GetActivePlayer().bar.ChangeGreen(g.green);
+                            break;
+                        }
+                    case GemType.Yellow:
+                        {
+                            manager.GetActivePlayer().AddScore(g.score);
+                            manager.GetActivePlayer().bar.ChangeYellow(g.yellow);
+                            break;
+                        }
+                    case GemType.Purple:
+                        {
+                            manager.GetActivePlayer().AddScore(g.score);
+                            manager.GetActivePlayer().MatchAttack(g.damage);
+                            break;
+                        }
+                    case GemType.Orange:
+                        {
+                            manager.GetActivePlayer().AddScore(g.score);
+                            manager.GetActivePlayer().bar.ChangeHP(g.damage);
+                            break;
+                        }
+                    case GemType.White:
+                        {
+                            manager.GetActivePlayer().AddScore(g.score);
+                            break;
+                        }
+                }
+            }
             EmptyCell(c);
+            yield return null;
         }
-        StartCoroutine(Repopulate());
         matched.Clear();
+        yield return StartCoroutine(Repopulate());
     }
 }

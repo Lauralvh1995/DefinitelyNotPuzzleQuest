@@ -21,9 +21,19 @@ public class TurnManager : MonoBehaviour {
         System.Array.Sort(players);
         System.Array.Reverse(players);
 
-        activePlayer = players[turnCount];
-
         reset = GetComponent<Board>().ResetBoard();
+    }
+    public void Initialize()
+    {
+        activePlayer = players[turnCount];
+        foreach (Player p in players)
+        {
+            p.bar.ChangeHP(20);
+            if (p != activePlayer)
+            {
+                p.canvas.enabled = false;
+            }
+        }
     }
 
     public void Pass()
@@ -78,5 +88,10 @@ public class TurnManager : MonoBehaviour {
             yield return 0;
         }
         moving = false; // MoveObject ended
+    }
+
+    public Player GetActivePlayer()
+    {
+        return activePlayer;
     }
 }
