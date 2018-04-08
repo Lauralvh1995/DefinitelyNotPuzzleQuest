@@ -132,6 +132,7 @@ public class Board : MonoBehaviour {
         bool newlyAdded = true;
         HashSet<Cell> match = new HashSet<Cell>();
 
+        GemType gem = c.GetContent().GetComponent<Gem>().type;
         //add origin to set
         //check up, left, down and right from origin
         //if same gem type, add to set
@@ -144,30 +145,30 @@ public class Board : MonoBehaviour {
             foreach (Cell i in match.ToList())
             {
                     newlyAdded = false;
-                    if (c.y < 7 && cells[c.x, c.y + 1].GetContent().GetComponent<Gem>().type == i.GetContent().GetComponent<Gem>().type)
+                    if (i.y < 7 && cells[i.x, i.y + 1].GetContent().GetComponent<Gem>().type == gem)
                     {
-                        if (match.Add(cells[c.x, c.y + 1]))
+                        if (match.Add(cells[i.x, i.y + 1]))
                         {
                             newlyAdded = true;
                         }
                     }
-                    if (c.y>0 && cells[c.x, c.y - 1].GetContent().GetComponent<Gem>().type == i.GetContent().GetComponent<Gem>().type)
+                    if (i.y > 0 && cells[i.x, i.y - 1].GetContent().GetComponent<Gem>().type == gem)
                     {
-                        if (match.Add(cells[c.x, c.y - 1]))
+                        if (match.Add(cells[i.x, i.y - 1]))
                         {
                             newlyAdded = true;
                         }
                     }
-                    if (c.x < 7 && cells[c.x + 1, c.y].GetContent().GetComponent<Gem>().type == i.GetContent().GetComponent<Gem>().type)
+                    if (i.x < 7 && cells[i.x + 1, i.y].GetContent().GetComponent<Gem>().type == gem)
                     {
-                        if (match.Add(cells[c.x + 1, c.y]))
+                        if (match.Add(cells[i.x + 1, i.y]))
                         {
                             newlyAdded = true;
                         }
                     }
-                    if (c.x > 0 && cells[c.x - 1, c.y].GetContent().GetComponent<Gem>().type == i.GetContent().GetComponent<Gem>().type)
+                    if (i.x > 0 && cells[i.x - 1, i.y].GetContent().GetComponent<Gem>().type == gem)
                     {
-                        if (match.Add(cells[c.x - 1, c.y]))
+                        if (match.Add(cells[i.x - 1, i.y]))
                         {
                             newlyAdded = true;
                         }
