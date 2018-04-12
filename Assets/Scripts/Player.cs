@@ -14,6 +14,8 @@ public enum Color
 
 public class Player : MonoBehaviour, IComparable<Player> {
     public BarController bar;
+    public bool defeated = false;
+    public Material defeatedMat;
     [SerializeField] int score;
 
     int currentHP;
@@ -34,6 +36,12 @@ public class Player : MonoBehaviour, IComparable<Player> {
         currentBlue = bar.GetBlue();
         currentGreen = bar.GetGreen();
         currentYellow = bar.GetYellow();
+
+        if (currentHP <= 0 && FindObjectOfType<TurnManager>().initializing == false)
+        {
+            defeated = true;
+            GetComponentInChildren<MeshRenderer>().material = defeatedMat;
+        }
     }
     Player FindPlayer(Color color)
     {
@@ -50,8 +58,10 @@ public class Player : MonoBehaviour, IComparable<Player> {
     {
         if(currentRed >4)
         {
-            bar.ChangeRed(-5);
-            FindPlayer(Color.Red).bar.ChangeHP(-5);
+            currentRed -= 5;
+            bar.SetRed(currentRed);
+            int otherHP = FindPlayer(Color.Red).currentHP -= 5;
+            FindPlayer(Color.Red).bar.SetHP(otherHP);
             FindObjectOfType<TurnManager>().ResetPass();
             FindObjectOfType<TurnManager>().NextTurn();
         }
@@ -60,8 +70,10 @@ public class Player : MonoBehaviour, IComparable<Player> {
     {
         if (currentBlue > 4)
         {
-            bar.ChangeBlue(-5);
-            FindPlayer(Color.Blue).bar.ChangeHP(-5);
+            currentBlue -= 5;
+            bar.SetBlue(currentBlue);
+            int otherHP = FindPlayer(Color.Blue).currentHP -= 5;
+            FindPlayer(Color.Blue).bar.SetHP(otherHP);
             FindObjectOfType<TurnManager>().ResetPass();
             FindObjectOfType<TurnManager>().NextTurn();
         }
@@ -70,8 +82,10 @@ public class Player : MonoBehaviour, IComparable<Player> {
     {
         if (currentGreen > 4)
         {
-            bar.ChangeGreen(-5);
-            FindPlayer(Color.Green).bar.ChangeHP(-5);
+            currentGreen -= 5;
+            bar.SetGreen(currentGreen);
+            int otherHP = FindPlayer(Color.Green).currentHP -= 5;
+            FindPlayer(Color.Green).bar.SetHP(otherHP);
             FindObjectOfType<TurnManager>().ResetPass();
             FindObjectOfType<TurnManager>().NextTurn();
         }
@@ -80,60 +94,100 @@ public class Player : MonoBehaviour, IComparable<Player> {
     {
         if (currentYellow > 4)
         {
-            bar.ChangeYellow(-5);
-            FindPlayer(Color.Yellow).bar.ChangeHP(-5);
+            currentYellow -= 5;
+            bar.SetYellow(currentYellow);
+            int otherHP = FindPlayer(Color.Yellow).currentHP -= 5;
+            FindPlayer(Color.Yellow).bar.SetHP(otherHP);
             FindObjectOfType<TurnManager>().ResetPass();
             FindObjectOfType<TurnManager>().NextTurn();
         }
     }
     public void MatchAttack(int damage)
     {
+        int otherHP;
         switch (playerColor)
         {
             case Color.Red:
                 {
-                    FindPlayer(Color.Green).bar.ChangeHP(-damage);
+                    otherHP = FindPlayer(Color.Green).currentHP -= damage;
+                    FindPlayer(Color.Green).bar.SetHP(otherHP);
                     break;
                 }
             case Color.Blue:
                 {
-                    FindPlayer(Color.Yellow).bar.ChangeHP(-damage);
+                    otherHP = FindPlayer(Color.Yellow).currentHP -= damage;
+                    FindPlayer(Color.Yellow).bar.SetHP(otherHP);
                     break;
                 }
             case Color.Green:
                 {
-                    FindPlayer(Color.Red).bar.ChangeHP(-damage);
+                    otherHP = FindPlayer(Color.Red).currentHP -= damage;
+                    FindPlayer(Color.Red).bar.SetHP(otherHP);
                     break;
                 }
             case Color.Yellow:
                 {
-                    FindPlayer(Color.Blue).bar.ChangeHP(-damage);
+                    otherHP = FindPlayer(Color.Blue).currentHP -= damage;
+                    FindPlayer(Color.Blue).bar.SetHP(otherHP);
                     break;
                 }
         }
     }
     public void ButtonHeal()
     {
+        int otherHP;
         switch (playerColor)
         {
             case Color.Red:
                 {
-                    FindPlayer(Color.Red).bar.ChangeHP(5);
+                    if (currentRed > 4)
+                    {
+                        currentRed -= 5;
+                        bar.SetRed(currentRed);
+                        otherHP = FindPlayer(Color.Red).currentHP += 5;
+                        FindPlayer(Color.Red).bar.SetHP(otherHP);
+                        FindObjectOfType<TurnManager>().ResetPass();
+                        FindObjectOfType<TurnManager>().NextTurn();
+                    }
                     break;
                 }
             case Color.Blue:
                 {
-                    FindPlayer(Color.Blue).bar.ChangeHP(5);
+                    if (currentBlue > 4)
+                    {
+                        currentBlue -= 5;
+                        bar.SetBlue(currentBlue);
+                        otherHP = FindPlayer(Color.Blue).currentHP += 5;
+                        FindPlayer(Color.Blue).bar.SetHP(otherHP);
+                        FindObjectOfType<TurnManager>().ResetPass();
+                        FindObjectOfType<TurnManager>().NextTurn();
+                    }
                     break;
                 }
             case Color.Green:
                 {
-                    FindPlayer(Color.Green).bar.ChangeHP(5);
+                    if (currentGreen > 4)
+                    {
+                        currentGreen -= 5;
+                        bar.SetGreen(currentGreen);
+                        otherHP = FindPlayer(Color.Green).currentHP += 5;
+                        FindPlayer(Color.Green).bar.SetHP(otherHP);
+                        FindObjectOfType<TurnManager>().ResetPass();
+                        FindObjectOfType<TurnManager>().NextTurn();
+                    }
                     break;
                 }
             case Color.Yellow:
                 {
-                    FindPlayer(Color.Yellow).bar.ChangeHP(5);
+                    if (currentYellow > 4)
+                    {
+                        currentYellow -= 5;
+                        bar.SetYellow(currentYellow);
+                        otherHP = FindPlayer(Color.Yellow).currentHP += 5;
+                        FindPlayer(Color.Yellow).bar.SetHP(otherHP);
+                        FindObjectOfType<TurnManager>().ResetPass();
+                        FindObjectOfType<TurnManager>().NextTurn();
+                    }
                     break;
                 }
         }
@@ -207,5 +261,31 @@ public class Player : MonoBehaviour, IComparable<Player> {
     public int GetScore()
     {
         return score;
+    }
+
+    public void AddRed(int i)
+    {
+        currentRed += i;
+        bar.SetRed(currentRed);
+    }
+    public void AddBlue(int i)
+    {
+        currentBlue += i;
+        bar.SetBlue(currentBlue);
+    }
+    public void AddGreen(int i)
+    {
+        currentGreen += i;
+        bar.SetGreen(currentGreen);
+    }
+    public void AddYellow(int i)
+    {
+        currentYellow += i;
+        bar.SetYellow(currentYellow);
+    }
+    public void AddHP(int i)
+    {
+        currentHP += i;
+        bar.SetHP(currentHP);
     }
 }

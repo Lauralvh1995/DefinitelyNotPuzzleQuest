@@ -12,26 +12,28 @@ public class BarController : MonoBehaviour {
     public Slider GreenBar;
     public Slider YellowBar;
 
-    public void ChangeHP(int i)
+    public Text hptext;
+
+    public void SetHP(int i)
     {
-        HPBar.value += i;
-        HPBar.GetComponentInChildren<Text>().text = HPBar.value + "/" + HPBar.maxValue; 
+        HPBar.value = i;
+        hptext.text = HPBar.value + "/" + HPBar.maxValue; 
     }
-    public void ChangeRed(int i)
+    public void SetRed(int i)
     {
-        RedBar.value += i;
+        RedBar.value = i;
     }
-    public void ChangeBlue(int i)
+    public void SetBlue(int i)
     {
-        BlueBar.value += i;
+        BlueBar.value = i;
     }
-    public void ChangeGreen(int i)
+    public void SetGreen(int i)
     {
-        GreenBar.value += i;
+        GreenBar.value = i;
     }
-    public void ChangeYellow(int i)
+    public void SetYellow(int i)
     {
-        YellowBar.value += i;
+        YellowBar.value = i;
     }
 
     public int GetHP()

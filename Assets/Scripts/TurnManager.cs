@@ -14,6 +14,8 @@ public class TurnManager : MonoBehaviour {
     [SerializeField]
     private Player activePlayer;
 
+    public bool initializing = true;
+
     IEnumerator reset;
     private void Awake()
     {
@@ -28,12 +30,13 @@ public class TurnManager : MonoBehaviour {
         activePlayer = players[turnCount];
         foreach (Player p in players)
         {
-            p.bar.ChangeHP(20);
+            p.AddHP(20);
             if (p != activePlayer)
             {
                 p.canvas.enabled = false;
             }
         }
+        initializing = false;
     }
 
     public void Pass()
@@ -73,6 +76,10 @@ public class TurnManager : MonoBehaviour {
             Quaternion rotationAmount = Quaternion.Euler(0, 90, 0);
             Quaternion postRotation = camera.rotation * rotationAmount;
             StartCoroutine(TurnCamera(camera, camera.rotation, postRotation, 1));
+        }
+        if (activePlayer.defeated)
+        {
+            Pass();
         }
     }
 

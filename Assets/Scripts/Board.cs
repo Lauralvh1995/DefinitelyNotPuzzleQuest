@@ -20,6 +20,8 @@ public class Board : MonoBehaviour {
     [SerializeField] GameObject backup2;
 
     [SerializeField] HashSet<Cell> matched;
+
+    bool cascading = false;
     public void Awake()
     {
         random = new System.Random();
@@ -39,7 +41,6 @@ public class Board : MonoBehaviour {
                 newTile.transform.SetParent(transform);
                 newTile.transform.localPosition = new Vector3(xOffset, 0, yOffset); // Note that our XY-plane maps to Unity's XZ-plane since Y is the vertical axis.
                 newTile.name = string.Format("Cell {0}x{1}", x, y);
-                //newTile.name = "Cell " + x + "x" + y;
 
                 cells[x, y] = newTile;
                 cells[x, y].x = x;
@@ -67,26 +68,33 @@ public class Board : MonoBehaviour {
             Match(c);
             yield return null;
         }
-        yield return StartCoroutine(Clear());
+        yield return StartCoroutine(FixBoard());
+    }
+
+    public IEnumerator FixBoard()
+    {
+        while (cascading)
+        {
+            cascading = false;
+            yield return StartCoroutine(Clear());
+            yield return StartCoroutine(Repopulate());
+        }
     }
     public IEnumerator Repopulate()
     {
-        List<Cell> repopulatedCells = new List<Cell>();
         foreach (Cell c in cells)
         {
             if (c.GetContent() == null)
             {
-                repopulatedCells.Add(c);
                 StartCoroutine(c.SetContent(possibleGems[random.Next(possibleGems.Count)]));
             }
             yield return null;
         }
-        foreach (Cell d in repopulatedCells)
+        foreach (Cell d in cells)
         {
             Match(d);
             yield return null;
         }
-        StartCoroutine(Clear());
     }
 
     public void EmptyCell(Cell c)
@@ -104,8 +112,7 @@ public class Board : MonoBehaviour {
 
         if(Match(cell1, cell2))
         {
-            yield return StartCoroutine(Clear());
-            yield return StartCoroutine(Repopulate());
+            yield return StartCoroutine(FixBoard());
             manager.NextTurn();
         }
         else
@@ -173,10 +180,10 @@ public class Board : MonoBehaviour {
                 }
             }
         }
-        
         if(match.Count > 2)
         {
             correct = true;
+            cascading = true;
 
             if (match.Count > 0)
             {
@@ -186,7 +193,6 @@ public class Board : MonoBehaviour {
                 }
             }
         }
-        
         manager.ResetPass();
         return correct;
     }
@@ -202,25 +208,25 @@ public class Board : MonoBehaviour {
                     case GemType.Red:
                         {
                             manager.GetActivePlayer().AddScore(g.score);
-                            manager.GetActivePlayer().bar.ChangeRed(g.red);
+                            manager.GetActivePlayer().AddRed(g.red);
                             break;
                         }
                     case GemType.Blue:
                         {
                             manager.GetActivePlayer().AddScore(g.score);
-                            manager.GetActivePlayer().bar.ChangeBlue(g.blue);
+                            manager.GetActivePlayer().AddBlue(g.blue);
                             break;
                         }
                     case GemType.Green:
                         {
                             manager.GetActivePlayer().AddScore(g.score);
-                            manager.GetActivePlayer().bar.ChangeGreen(g.green);
+                            manager.GetActivePlayer().AddGreen(g.green);
                             break;
                         }
                     case GemType.Yellow:
                         {
                             manager.GetActivePlayer().AddScore(g.score);
-                            manager.GetActivePlayer().bar.ChangeYellow(g.yellow);
+                            manager.GetActivePlayer().AddYellow(g.yellow);
                             break;
                         }
                     case GemType.Purple:
@@ -232,7 +238,7 @@ public class Board : MonoBehaviour {
                     case GemType.Orange:
                         {
                             manager.GetActivePlayer().AddScore(g.score);
-                            manager.GetActivePlayer().bar.ChangeHP(g.damage);
+                            manager.GetActivePlayer().AddHP(g.damage);
                             break;
                         }
                     case GemType.White:
@@ -246,6 +252,5 @@ public class Board : MonoBehaviour {
             yield return null;
         }
         matched.Clear();
-        yield return StartCoroutine(Repopulate());
     }
 }
