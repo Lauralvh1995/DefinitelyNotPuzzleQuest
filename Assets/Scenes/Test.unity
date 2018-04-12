@@ -3971,6 +3971,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bar: {fileID: 770666097}
+  defeated: 0
+  defeatedMat: {fileID: 2100000, guid: 8f9b09679e5e7ac4493ade5ffb6b8ca8, type: 2}
   score: 0
   playerColor: 2
   canvas: {fileID: 2113349136}
@@ -5301,6 +5303,7 @@ MonoBehaviour:
   camera: {fileID: 1016077104}
   players: []
   activePlayer: {fileID: 0}
+  initializing: 1
 --- !u!114 &923081903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5560,6 +5563,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bar: {fileID: 959533116}
+  defeated: 0
+  defeatedMat: {fileID: 2100000, guid: 8f9b09679e5e7ac4493ade5ffb6b8ca8, type: 2}
   score: 0
   playerColor: 1
   canvas: {fileID: 1543693905}
@@ -8908,6 +8913,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bar: {fileID: 1542385320}
+  defeated: 0
+  defeatedMat: {fileID: 2100000, guid: 8f9b09679e5e7ac4493ade5ffb6b8ca8, type: 2}
   score: 0
   playerColor: 3
   canvas: {fileID: 820570557}
@@ -9371,6 +9378,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bar: {fileID: 1591675723}
+  defeated: 0
+  defeatedMat: {fileID: 2100000, guid: 8f9b09679e5e7ac4493ade5ffb6b8ca8, type: 2}
   score: 0
   playerColor: 0
   canvas: {fileID: 1105827778}
