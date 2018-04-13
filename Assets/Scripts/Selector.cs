@@ -15,8 +15,9 @@ public class Selector : MonoBehaviour {
         if (Physics.Raycast(ray, out hitInfo))
         {
             hover = hitInfo.transform;
-            if(Input.GetMouseButtonDown(0))
+            if(Input.GetMouseButtonDown(0) && !FindObjectOfType<TurnManager>().moving)
             {
+                
                 if (selected != null)
                 {
                     target = hitInfo.transform.gameObject.GetComponentInParent<Cell>();

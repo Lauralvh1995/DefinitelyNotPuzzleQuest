@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TurnManager : MonoBehaviour {
     public Transform camera;
-    bool moving;
+    public bool moving;
     int turnCount = 0;
     int pass = 0;
 

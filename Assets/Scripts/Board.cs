@@ -150,7 +150,7 @@ public class Board : MonoBehaviour {
             foreach (Cell i in match.ToList())
             {
                 newlyAdded = false;
-                if (i.y < 7 && cells[i.x, i.y + 1].GetContent().GetComponent<Gem>().type == gem)
+                if (i.y < height - 1 && cells[i.x, i.y + 1].GetContent().GetComponent<Gem>().type == gem)
                 {
                     if (match.Add(cells[i.x, i.y + 1]))
                     {
@@ -164,7 +164,7 @@ public class Board : MonoBehaviour {
                         newlyAdded = true;
                     }
                 }
-                if (i.x < 7 && cells[i.x + 1, i.y].GetContent().GetComponent<Gem>().type == gem)
+                if (i.x < width - 1 && cells[i.x + 1, i.y].GetContent().GetComponent<Gem>().type == gem)
                 {
                     if (match.Add(cells[i.x + 1, i.y]))
                     {
@@ -252,5 +252,9 @@ public class Board : MonoBehaviour {
             yield return null;
         }
         matched.Clear();
+    }
+    public void Exit()
+    {
+        Application.Quit();
     }
 }

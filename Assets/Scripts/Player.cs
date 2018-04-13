@@ -56,7 +56,7 @@ public class Player : MonoBehaviour, IComparable<Player> {
     }
     public void AttackRed()
     {
-        if(currentRed >4)
+        if(currentRed > 4 && !defeated)
         {
             currentRed -= 5;
             bar.SetRed(currentRed);
@@ -65,10 +65,14 @@ public class Player : MonoBehaviour, IComparable<Player> {
             FindObjectOfType<TurnManager>().ResetPass();
             FindObjectOfType<TurnManager>().NextTurn();
         }
+        else
+        {
+            FindObjectOfType<TurnManager>().Pass();
+        }
     }
     public void AttackBlue()
     {
-        if (currentBlue > 4)
+        if (currentBlue > 4 && !defeated)
         {
             currentBlue -= 5;
             bar.SetBlue(currentBlue);
@@ -77,10 +81,14 @@ public class Player : MonoBehaviour, IComparable<Player> {
             FindObjectOfType<TurnManager>().ResetPass();
             FindObjectOfType<TurnManager>().NextTurn();
         }
+        else
+        {
+            FindObjectOfType<TurnManager>().Pass();
+        }
     }
     public void AttackGreen()
     {
-        if (currentGreen > 4)
+        if (currentGreen > 4 && !defeated)
         {
             currentGreen -= 5;
             bar.SetGreen(currentGreen);
@@ -89,10 +97,14 @@ public class Player : MonoBehaviour, IComparable<Player> {
             FindObjectOfType<TurnManager>().ResetPass();
             FindObjectOfType<TurnManager>().NextTurn();
         }
+        else
+        {
+            FindObjectOfType<TurnManager>().Pass();
+        }
     }
     public void AttackYellow()
     {
-        if (currentYellow > 4)
+        if (currentYellow > 4 && !defeated)
         {
             currentYellow -= 5;
             bar.SetYellow(currentYellow);
@@ -100,6 +112,11 @@ public class Player : MonoBehaviour, IComparable<Player> {
             FindPlayer(Color.Yellow).bar.SetHP(otherHP);
             FindObjectOfType<TurnManager>().ResetPass();
             FindObjectOfType<TurnManager>().NextTurn();
+
+        }
+        else
+        {
+            FindObjectOfType<TurnManager>().Pass();
         }
     }
     public void MatchAttack(int damage)
@@ -135,6 +152,10 @@ public class Player : MonoBehaviour, IComparable<Player> {
     }
     public void ButtonHeal()
     {
+        if(defeated)
+        {
+            FindObjectOfType<TurnManager>().Pass();
+        }
         int otherHP;
         switch (playerColor)
         {
